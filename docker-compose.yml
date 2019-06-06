@@ -1,0 +1,23 @@
+version: '3'
+
+networks:
+  web:
+    external: true
+
+services:
+  nullbot:
+    build: ./docker
+    env_file: ./config.env
+    networks:
+    - web
+    expose:
+    - "80"
+    volumes:
+    - ./src:/var/www/html:ro
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=web"
+    - "traefik.protocol=http"
+    - "traefik.port=80"
+    - "traefik.frontend.rule=Host:bot.codehunting.games"
+    - "traefik.frontend.entryPoints=https"
